@@ -58,6 +58,40 @@ DATABASES = {
 (3) 定义属性时需要指定字段类型，通过字段类型的参数指定选项,语法: 属性名=models.字段类型(选项)
 
 字段类型
+
+| 字段       | 描述            |
+| :--------:   | :----------------:|
+| **AutoField**  | 自动增长的IntegerField，通常不用指定，不指定时Django会自动创建属性名为id的自动增长属性。|
+|**BooleanField**|布尔字段，值为True或False。|
+|**NullBooleanField**|支持Null、True、False三种值。|
+|**CharField**(max_length=最大长度)|字符串。参数max_length表示最大字符个数。必须设置该属性|
+|**TextField**|大文本字段，一般超过4000个字符时使用。|
+|**IntegerField**|整数|
+|**DecimalField**(max_digits=None, decimal_places=None)|十进制浮点数。参数max_digits表示总位。参数decimal_places表示小数位数。|
+|**FloatField**|浮点数。参数同上|
+|**DateField**([auto_now=False, auto_now_add=False])|日期。 1)参数auto_now表示每次保存对象时，自动设置该字段为当前时间，用于"最后一次修改"的时间戳，它总是使用当前日期，默认为false。 2) 参数auto_now_add表示当对象第一次被创建时自动设置当前时间，用于创建的时间戳，它总是使用当前日期，默认为false。 3)参数auto_now_add和auto_now是相互排斥的，组合将会发生错误。|
+|**TimeField**|时间，参数同DateField。|
+|**DateTimeField**|日期时间，参数同DateField。|
+
+选项
+
+通过选项实现对字段的约束，选项如下：
+
+| 选项       | 描述            |
+| :--------:   | :----------------:|
+| **default**  | 默认值。设置默认值。|
+|**primary_key**|若为True，则该字段会成为模型的主键字段，默认值是False，一般作为AutoField的选项使用。|
+|**unique**|如果为True, 这个字段在表中必须有唯一值，默认值是False。|
+|**db_index**|若值为True, 则在表中会为此字段创建索引，默认值是False。|
+|**db_column**|字段的名称，如果未指定，则使用属性的名称。|
+|**null**|如果为True，表示允许为空，默认值是False|
+|**blank**|如果为True，则该字段允许为空白，默认值是False。|
+|**verbose_name**|在Admin站点管理设置字段的显示名称|
+|**related_name**|关联对象反向引用描述符，用于多表查询，可解决一个数据表有两个外键指向同一个数据表出现重名问题|
+
+**对比：null是数据库范畴的概念，blank是后台管理(admin)页面表单验证范畴的。**
+
+在model.py中根据定义类变成模型，以下是以图书管理系统图书模型编写。
 ```python
 from django.db import models
 class Book(models.Model):
@@ -67,55 +101,23 @@ class Book(models.Model):
 	commit = models.IntegerField()      # 归还数
 
 ```
-以上的代码通过定义一个book类来定义一个模型，
 
-> * **tuple**：元组，和list非常类似，区别在于tuple一旦初始化就不能修改了。tuple的"不变性"：tuple中的每个元素，指向永远不变。
-```Python
->>> t1 = (1, 'a', True)
->>> t1[0]
-1
->>> t2 = (1,)
+#### 3. 构建模型。
+
+完成模型的定义后，在目的数据库中使用Django管理工具manage.py完成
+
+(1)初始化和检查模型更改命令
+```Shell
+python manage.py makemigrations
 ```
+执行该命令后会在项目下的app目录生成migrations文件夹，并生成001_initial.py文件，该文件记录mode.py内容生成的数据表脚本代码。
 
-```python
->>> t = (1, 'a', [1,2])
->>> t[2] = [1, 2, 3]
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-TypeError: 'tuple' object does not support item assignment
->>> t[2].append(3)
->>> t
-(1, 'a', [1, 2, 3])
+(2)构建数据表
+```Shell
+python manage.py migrate
 ```
+执行数据表的脚本代码生成数据表
 
-> * **dict**：字典，使用键值对存储，具有极快的查找速度。它是根据key通过哈希算法算出value的存放位置的，所以dict的key必须是**不可变对象**。
-```python
->>> d = {1: 'a', 2: 'b', 3:'c'}
->>> d[1]
-'a'
->>> d[4]
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-KeyError: 4
->>> d.get(4, -1)
--1
-```
-
-> * **set**：是一个无序的集合，元素不重复、不可变。set可以做数学意义上的交集、并集等操作。
-```python
->>> s = set([1, 2, 2, 3])
->>> s
-{1, 2, 3}
-```
-
-|       | 是否有序  | 能否读写 | 能否重复  | 获取元素方式 |
-|-------|----------|---------|-----------|-------------|
-| list  | 有序     | 读写     | 是        | 索引        |
-| tuple | 有序     | 只读     | 是        | 索引        |
-| dict  | 无序     | 读写     | 键不能重复 | 不支持索引  |
-| set   | 无序     | 读写     | 否        | 键          |
-
-更多细节可参考[Python官方文档](https://docs.python.org/3.7/library/stdtypes.html)
 
 #### 3. 高级特性
 
