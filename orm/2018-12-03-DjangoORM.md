@@ -99,6 +99,7 @@ class Book(models.Model):
 	pub_date = models.DateField()     # 发行日期
 	read = models.IntegerField()    # 借阅数
 	commit = models.IntegerField()      # 归还数
+    price = models.FloatField()      # 图书价格
 
 ```
 
@@ -125,109 +126,157 @@ python manage.py migrate
 > * [查询操作的基本使用](https://github.com/Socketsj/django/blob/master/orm/django%E6%9F%A5%E8%AF%A2%E5%87%BD%E6%95%B0.md)
 
 > * **F对象**: F对象，为模型字段Filed的对象，代表模型操作。
-> * [F对象的基本使用](https://github.com/Socketsj/django/blob/master/orm/django%E6%9F%A5%E8%AF%A2%E5%87%BD%E6%95%B0.md)
+> * [F对象的基本使用](https://github.com/Socketsj/django/blob/master/orm/djangoF%E5%AF%B9%E8%B1%A1.md)
 
 > * **Q对象**: Q对象，用于查询时条件之间的逻辑关系。not and or，可以对Q对象进行 & | ~ 操作。。
-> * [Q对象的基本使用](https://github.com/Socketsj/django/blob/master/orm/django%E6%9F%A5%E8%AF%A2%E5%87%BD%E6%95%B0.md)
+> * [Q对象的基本使用](https://github.com/Socketsj/django/blob/master/orm/djangoQ%E5%AF%B9%E8%B1%A1.md)
 
-> * **定制类**：Python的class允许自定义许多定制方法来生成具备特定行为的类。
-> * [常用的定制方法](https://github.com/Klay-Lin/python_notes/blob/master/Python%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/%E5%AE%9A%E5%88%B6%E7%B1%BB.md)
-> * 更多的定制方法，可以参考[Python官方文档](https://docs.python.org/3/reference/datamodel.html#special-method-names)
+> * **聚合函数**: Q对象，用于查询时条件之间的逻辑关系。not and or，可以对Q对象进行 & | ~ 操作。。
+> * [聚合函数的基本使用](https://github.com/Socketsj/django/blob/master/orm/djangoQ%E5%AF%B9%E8%B1%A1.md)
 
-
-### 二、Python常用工具
-
-#### 1. pip
-
-#### 什么是 pip
-
-[PyPI](https://pypi.org/)(Python Package Index)是Python官方的第三方库网站，可以在上面搜索和下载开发所需的库，PyPI 推荐使用 pip 来下载第三方库。
-
-**pip**(python install packages)是Python包管理工具，它提供了对Python包的查找、下载、安装、卸载的功能。
-
-#### 安装 pip
-
-Mac或Linux本身一般已安装 pip，Windows可以在安装Python时勾选 pip选项同时安装 pip。如果没有安装，可以使用以下命令进行安装：
-
-    $ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-    $ python get-pip.py
-
-#### pip 常用命令
-
-|   命令                          |   描述                 |
-|---------------------------------|------------------------|
-| pip --version                   | 显示版本和路径          |
-| pip --help                      | 获取帮助信息            |
-| pip install django==2.0.1       | 安装指定版本的包        |
-| pip install --upgrade django    | 升级包                 |
-| pip install –r requirements.txt | 安装指定文本中的包      |
-| pip freeze > requirements.txt   | 导出当前已安装包到文本中 |
-| pip show django                 | 显示安装包信息          |
-| pip uninstall django            | 卸载包                 |
-| pip list                        | 列出已安装的包          |
-
-更多详细命令可参考[pip官方文档](https://pip.pypa.io/en/stable/reference/)
-
-#### 2. virtualenv / virtualenvwrapper
-
-#### 什么是 virtualenv
-
-Python所有的第三方库都会被 pip 安装到Python的 **site-packages** 目录下。多个项目应用共享同一份Python运行环境，容易造成不同应用间的多版本冲突及难以维护的问题等。
-
-**解决方案**：每个应用单独拥有一份独立的运行环境，互不干扰。
-
-**virtualenv** 就是用来做这件事的，它是一个为某个应用创建一份独立的Python环境的工具。
-
-[virtualenv的基本使用](https://github.com/Klay-Lin/python_notes/blob/master/Python%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/virtualenv.md)
-
-#### virtualenv 的原理及缺点
-
-**原理**：把系统Python环境复制一份到virtualenv环境下，当进入一个virtualenv环境时，virtualenv会修改相关的环境变量，让命令python和pip均指向当前的virtualenv环境。
-
-**缺点**：virtualenv 创建的虚拟环境都是分散的，每次切换一个环境都需要进入到相应的目录并执行source命令来激活环境，不便于集中管理。
-
-#### virtualenvwrapper 的使用
-
-virtualenvwrapper 是管理虚拟环境的工具，它对 virtualenv 进行了包装，可以把所有虚拟环境都放到一个目录中，该目录通过 **WORKON_HOME** 变量进行设置。实际开发中建议使用 **virtualenvwrapper**。
-
-[virtualenvwrapper的基本使用](https://github.com/Klay-Lin/python_notes/blob/master/Python%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/virtualenvwrapper.md)
-
-[virtualenvwrapper详细文档](https://virtualenvwrapper.readthedocs.io/en/latest/)
+> * 更多django使用方法，可以参考[django官方文档](https://docs.djangoproject.com/en/1.11/ref/databases/)
 
 
-### 三、WSGI接口
+### 三、Django ORM 进阶
 
-#### 1. 网关接口的发展历程
+#### 1. QuerySet
 
-> * CGI：全称为Common Gateway Interface，适用于所有的脚本语言。当有请求时，web服务器会启动一个CGI进程并把请求信息传递给该CGI进程，CGI进程执行完后返回数据给web服务器并销毁该进程。
-> * FastCGI：顾名思义，它是CGI的快速版本。它会在web服务器刚启动的时候预先启动若干常驻进程，当有请求时，直接从常驻进程中选取一个来执行，因为它无需反复启动和销毁进程，所以在效率上比CGI快。
-> * WSGI：Python专有的接口规范协议。它支持多进程、多线程等方式来处理用户请求，从而进一步提高了并发效率。
+all, filter, exclude, order_by调用这些函数会产生一个查询集，QuerySet类对象可以继续调用上面的所有函数。
 
-|         | 优点                                 |                                |
-|---------|--------------------------------------|--------------------------------|
-| CGI     | 支持所有脚本语言、跨平台               | 开销大、并发处理能力低           |
-| FastCGI | 处理能力提高，支持跨服务器通信          | 并发能力有限，没有统一的接口规范  |
-| WSGI    | 达到了程序解耦的目的，支持多进程，多线程 | 不支持跨服务器通信              |
+#### QuerySet特性
 
-#### 2. WSGI接口
-从客户端发送一个http请求到web应用程序处理请求，分别经过了web服务器、WSGI、web应用程序三个层次。
+1）惰性查询：只有在实际使用查询集中的数据的时候才会发生对数据库的真正查询。
 
-> * web服务器：接收请求、处理请求、返回响应
-> * WSGI：连接web服务器和web应用程序，实现两者的通信
-> * web应用程序：实现业务逻辑，返回动态数据
+2）缓存：当使用的是同一个查询集时，第一次使用的时候会发生实际数据库的查询，然后把结果缓存起来，之后再使用这个查询集时，使用的是缓存中的结果。
 
-![WSGI](http://static.zybuluo.com/rainybowe/qmuk0e449mawtyfzs8brgm6g/wsgi.png)
+#### QuerySet查询限制
 
-WSGI：全称为Web Server Gateway Interface。WSGI协议主要包括server和application两部分，它定义了web服务器和web应用之间通信的接口规范。也就是说，只要web服务器和web应用都实现WSGI协议，那么web服务器和web应用就可以随意组合使用。
+可以对一个查询集进行取下标或者切片操作来限制查询集的结果。
 
-WSGI server和WSGI application的交互过程如下：
-> * 1.WSGI server接收并处理客户端请求，将客户端信息、服务器信息和请求信息等都全部封装到环境变量environ中
-> * 2.WSGI server将environ和回调函数传递给WSGI application
-> * 3.WSGI application从environ变量中获取信息，通过调用回调函数返回状态码和响应头，同时返回响应体给WSGI server
-> * 4..WSGI server将响应信息返回给客户端
+对一个查询集进行切片操作会产生一个新的查询集，下标不允许为负数。
 
-Python内置了一个WSGI服务器，这个模块叫wsgiref。通过WSGI和wsgiref实现[最简单的web app](https://github.com/Klay-Lin/python_notes/blob/master/WSGI/WSGI.md)
+取出查询集第一条数据的两种方式:
 
-#### 3. Java中的实现-Servlet
+| 方法      | 说明            |
+| :--------:   | :----------------:|
+|b[0]|如果b[0]不存在，会抛出IndexError异常|
+|b[0:1].get()|如果b[0:1].get()不存在，会抛出DoesNotExist异常。|
 
+使用Exists：判断Queryset中是否有数据
 
+#### 2. 模型类关系
+
+#### 一对多关系
+例如: 作者和图书关系，一个作者可以编写多本书
+
+```python
+models.ForeignKey() # 定义在多的类中，例如定义在book中
+```
+#### 多对多关系
+例如: 读者和图书关系，一个读者可以借多本书，一种图书也可以被多个读者借阅
+
+```python
+models.ManyToManyField() # 定义任一个类，会更加多对多关系生成关系表
+```
+
+#### 一对一关系
+例如：图书和图书详细信息
+
+```python
+models.OneToOneField() # 定义任一个类
+```
+
+#### 3. 关联查询（一对多）
+查询和对象关联的数据
+
+在一对多关系中，一对应的类我们把它叫做一类，多对应的那个类我们把它叫做多类，我们把多类中定义的建立关联的类属性叫做关联属性。
+
+例如通过作者来查询作者编写的书
+
+```python
+a = Author.objects.get(id=3)
+a.book_set.all() # 获取作者所有图书
+```
+
+通过图书查询作者
+
+```python
+b = Book.objects.get(id=5)
+b.author.name # 获取作者的名字
+```
+
+查询作者id为3的图书
+
+```python
+b = Book.objects.filter(author_id=3)
+```
+
+#### 总结
+
+由一类的对象查询多类的时候：
+
+    一类的对象.多类名小写_set.all() #查询所用数据
+
+由多类的对象查询一类的时候：
+
+    多类的对象.关联属性  #查询多类的对象对应的一类的对象
+
+由多类的对象查询一类对象的id时候：
+
+    多类的对象. 关联属性_id
+
+#### 4. 管理器
+在查询例子中，我们每次查询模型都会使用objects.get,.filter。objects是Django帮我自动生成的管理器对象，通过这个管理器可以实现对数据的查询。
+
+objects是models.Manger类的一个对象。自定义管理器之后Django不再帮我们生成默认的objects管理器，通过继承models.Manger我们可以自定义一个管理
+
+例如自定义图书信息管理，只筛选书名不为空的图书信息
+```python
+class BookInfoManager(models.Manager):
+    '''图书模型管理器类'''
+
+    # 1 改变查询的结果集
+    def all(self):
+        # 1 调用父类的all方法，获取所有数据
+        books = super().all()
+        # 2.对数据进行过滤
+        books = books.filter(name_isnull=False)
+        # 3 返回对象
+        return books
+```
+
+添加额外方法
+
+管理器类中定义一个方法帮我们操作模型类对应的数据表。
+
+使用self.model()就可以创建一个跟自定义管理器对应的模型类对象。
+```python
+class BookInfoManager(models.Manager):
+    '''图书模型管理器类'''
+
+    # 1 改变查询的结果集
+    def all(self):
+        # 1 调用父类的all方法，获取所有数据
+        books = super().all()
+        # 2.对数据进行过滤
+        books = books.filter(isDelete=False)
+        # 3 返回对象
+        return books
+
+    # 2 封装函数：操作模型类对应的数据表(增删改查)
+
+    def create_book(self, btitle, bpub_data):
+        # 1 创建一个图书对象
+        #  获取self所在的模型类
+        model_class = self.model  # self.model 指向所属模型类的类名
+        book = model_class()
+        book.btitle = btitle
+        book.bpub_data = bpub_data
+        # 保存
+        book.save()
+        # 返回
+        return book
+```
+
+#### 小结
+![管理器关系图](https://www.e-learn.cn/sites/default/files/ueditor/1/upload/image/20180717/1531833166468725.png)
