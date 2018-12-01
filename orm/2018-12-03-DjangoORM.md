@@ -132,7 +132,7 @@ python manage.py migrate
 > * [Q对象的基本使用](https://github.com/Socketsj/django/blob/master/orm/djangoQ%E5%AF%B9%E8%B1%A1.md)
 
 > * **聚合函数**: Q对象，用于查询时条件之间的逻辑关系。not and or，可以对Q对象进行 & | ~ 操作。。
-> * [聚合函数的基本使用](https://github.com/Socketsj/django/blob/master/orm/djangoQ%E5%AF%B9%E8%B1%A1.md)
+> * [聚合函数的基本使用](https://github.com/Socketsj/django/blob/master/orm/django%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0.md)
 
 > * 更多django使用方法，可以参考[django官方文档](https://docs.djangoproject.com/en/1.11/ref/databases/)
 
