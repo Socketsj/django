@@ -119,10 +119,10 @@ python manage.py migrate
 执行数据表的脚本代码生成数据表
 
 
-#### 3. 高级特性
+#### 4. 模型操作
 
-> * **列表生成式**：Python内置的简单却强大的可以快速创建list的生成式。
-> * [列表生成式的基本使用](https://github.com/Klay-Lin/python_notes/blob/master/Python%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/%E5%88%97%E8%A1%A8%E7%94%9F%E6%88%90%E5%BC%8F.md)
+> * **查询操作**：通过模型类.objects属性可以调用如下函数，实现对模型类对应的数据表的查询。
+> * [查询操作的基本使用](https://github.com/Socketsj/django/blob/master/orm/django%E6%9F%A5%E8%AF%A2%E5%87%BD%E6%95%B0.md)
 
 > * **切片**:获取集合的指定索引范围内的元素，使用循环比较繁琐，Python提供了切片操作符，可以大大简化这种操作。
 > * [切片的基本使用](https://github.com/Klay-Lin/python_notes/blob/master/Python%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/%E5%88%87%E7%89%87.md)
