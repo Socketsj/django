@@ -124,19 +124,11 @@ python manage.py migrate
 > * **查询操作**：通过模型类.objects属性可以调用如下函数，实现对模型类对应的数据表的查询。
 > * [查询操作的基本使用](https://github.com/Socketsj/django/blob/master/orm/django%E6%9F%A5%E8%AF%A2%E5%87%BD%E6%95%B0.md)
 
-> * **切片**:获取集合的指定索引范围内的元素，使用循环比较繁琐，Python提供了切片操作符，可以大大简化这种操作。
-> * [切片的基本使用](https://github.com/Klay-Lin/python_notes/blob/master/Python%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/%E5%88%87%E7%89%87.md)
+> * **F对象**: F对象，为模型字段Filed的对象，代表模型操作。
+> * [F对象的基本使用](https://github.com/Socketsj/django/blob/master/orm/django%E6%9F%A5%E8%AF%A2%E5%87%BD%E6%95%B0.md)
 
-> * 如果要创建一个包含10万个元素的列表,使用列表生成式是不现实的。
-> * 解决方案：不必创建出完整的list,可以在循环的过程中按照某种算法不断地推算出后面的元素,这样可以节省大量的内存空间。这种一边循环一边计算元素的机制，称为**生成器**。
-> * **生成器(generator)**：一个**惰性计算**的有序数据流，在需要返回下一个数据时才会计算元素的值。
-> * 创建一个generator主要有两种方法：第一种是把一个列表生成式的[]改成()，第二种是在函数定义中包含*yield*关键字。
-> * **注意**：包含yield关键字的函数不是普通函数，而是生成器。它在每次调用next()时执行，遇到yield语句就返回，再次执行时从上次返回的yield语句处再继续执行。
-> * [生成器的创建和使用](https://github.com/Klay-Lin/python_notes/blob/master/Python%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/%E7%94%9F%E6%88%90%E5%99%A8.md)
-
-> * **高阶函数**：可以接收函数作为参数，也可以把函数作为返回值返回。
-> * **装饰器**：如果我们想增强一个函数的功能，又不想修改该函数的定义，可以在代码运行期间动态增加功能，这种方式称为“装饰器”。decorator是一个返回函数的高阶函数。
-> * [装饰器的定义](https://github.com/Klay-Lin/python_notes/blob/master/Python%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/%E8%A3%85%E9%A5%B0%E5%99%A8.md)
+> * **Q对象**: Q对象，用于查询时条件之间的逻辑关系。not and or，可以对Q对象进行 & | ~ 操作。。
+> * [Q对象的基本使用](https://github.com/Socketsj/django/blob/master/orm/django%E6%9F%A5%E8%AF%A2%E5%87%BD%E6%95%B0.md)
 
 > * **定制类**：Python的class允许自定义许多定制方法来生成具备特定行为的类。
 > * [常用的定制方法](https://github.com/Klay-Lin/python_notes/blob/master/Python%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/%E5%AE%9A%E5%88%B6%E7%B1%BB.md)
