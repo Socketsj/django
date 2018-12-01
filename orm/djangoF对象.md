@@ -1,23 +1,27 @@
-# django Q对象基本使用
-Q对象是代表模型query对象，用于查询时条件之间的逻辑关系。not and or，可以对Q对象进行 & | ~ 操作
+# django F对象基本使用
+F对象是代表模型字段的值，也就是说对于一些特殊的字段的操作，有以下使用场景
 
-使用之前需要先导入：from django.db.models import Q
+使用之前需要先导入：from django.db.models import F
 
-### and 逻辑
-查询1996-01-01年后出版和借阅数大于3
+### 1. update操作
+一般orm操作中修改一个模型数据，先将模型数据取出来修改执行save()如下
 ```python
-Book.objects.filter(id__gt=3, bread__gt=30)
-Book.objects.filter(Q(id__gt=3)&Q(bread__gt=30))
+book = Book.objects.get(name='计算机科学概论')
+book.read += 1
+book.save()
 ```
 
-### or 逻辑
-查询借阅数大于5或还数大于5的图书信息
+如果想要使用update table set col = a where col2 = 3可以使用F对象如下
 ```python
-Book.objects.filter(Q(read__gt=5)|Q(commit__gt=5))
+book = Book.objects.filter(name='计算机科学概论').update(read=F('read')+1)
 ```
 
-### not 逻辑
-查询id不为3的图书信息
+### 2. 用于类属性(字段)之间的比较
+返回模型类对应表格中的所有数据。返回值为QuerySet类型
+
+返回查询借阅数大于还书数的图书信息
 ```python
-Book.objects.filter(~Q(id=3))
+>>> Book.objects.filter(read__gt=F('commit'))
+QuerySet<[<Book: Book.object>]>
 ```
+
